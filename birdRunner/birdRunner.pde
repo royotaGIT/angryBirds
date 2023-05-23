@@ -17,14 +17,17 @@ public void setup(){
     pigs.add(johnny);
 }
 public void draw(){
-    count++;
     image(b,700,300);
     strokeWeight(10);
     line(150, 500, 150, 400);
     image(g,gavin.xPos,gavin.yPos);
-    text(count, 700,100);
-    for(Pig x:pigs){
+    for(int i = 0; i < pigs.size(); i++){
+      Pig x = pigs.get(i);
       image(p, x.x, x.y);
+      if((gavin.xPos + 30 > x.x && gavin.xPos - 30 < x.x)&&(gavin.yPos + 30 > x.y && gavin.yPos-30 < x.y)){
+      pigs.remove(i);
+      i--;
+      }
     }
     if(draw && mouseX < 150 && !inFlight){
     gavin.xPos = mouseX; 
@@ -45,7 +48,6 @@ public void mouseReleased(){
   if(!inFlight){
   inFlight = true;
   gavin.velocity = (150 - mouseX)/18;
-  gavin.fall = (gavin.yPos - 400)/15;
-  gavin.maxFall = gavin.fall;
+  gavin.vert = (gavin.yPos - 400)/15;
   }
 }
