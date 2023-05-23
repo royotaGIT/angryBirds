@@ -17,10 +17,12 @@ public void setup(){
     pigs.add(johnny);
 }
 public void draw(){
+    count++;
     image(b,700,300);
     strokeWeight(10);
     line(150, 500, 150, 400);
     image(g,gavin.xPos,gavin.yPos);
+    text(count, 700,100);
     for(Pig x:pigs){
       image(p, x.x, x.y);
     }
@@ -31,7 +33,7 @@ public void draw(){
     }else{gavin.yPos = 489;}
     strokeWeight(5);
     line(150,400,gavin.xPos - 10, gavin.yPos + 10);
-  }else if(inFlight && mouseX < 150){
+  }else if(inFlight){
     gavin.move();
   }
 }

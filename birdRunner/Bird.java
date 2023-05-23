@@ -13,15 +13,15 @@ public class Bird{
     public void move(){
     xPos+=velocity;
     if(velocity > 0){
-    velocity -= 0.005;}
+    velocity -= 0.0075;}
     if(yPos < 490){
     yPos -= fall;
     fall-= 0.05;
     }else{
       fall = maxFall/2;
       yPos -= fall;
-      if(maxFall - 0.4 > 0){
-      maxFall -= 0.4;
+      if(maxFall - 1 > 0){
+      maxFall -= 1;
       }else{
         maxFall = 0;
       }
