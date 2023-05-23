@@ -53,10 +53,15 @@ public void draw(){
     }else{gavin.y = 489;}
     strokeWeight(5);
     line(150,400,gavin.x - 10, gavin.y + 10);
-    for(Prediction x:predictions){
-      x.frames = (int)(400-mouseX)/10;
+    for(int i = 0; i < predictions.size(); i++){
+      Prediction x = predictions.get(i);
+      x.frames = (int)((400-mouseX) * i / 25 + 25);
       x.update(gavin);
+      if(x.y < 490){
+      fill(255);
+      strokeWeight(2);
       circle(x.x,x.y,10);
+      }
     }
   }else if(inFlight){
     gavin.move();
