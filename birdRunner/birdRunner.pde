@@ -6,6 +6,8 @@ int points = 0;
 ArrayList<Pig> pigs;
 public Prediction one, two, three, four;
 ArrayList<Prediction> predictions;
+public Obstacle obstacle;
+ArrayList<Obstacle> o;
 public Bird gavin;
 public void setup(){
     size(1400,600);
@@ -28,6 +30,9 @@ public void setup(){
     predictions.add(two);
     predictions.add(three);
     predictions.add(four);
+    obstacle = new Obstacle(500, 400, 700);
+    o = new ArrayList<Obstacle>();
+    o.add(obstacle);
 }
 public void draw(){
     image(b,700,300);
@@ -44,6 +49,18 @@ public void draw(){
       pigs.remove(i);
       points+=5000;
       i--;
+      }
+    }
+    for(int i = 0; i < o.size(); i++){
+      Obstacle y = o.get(i);
+      if((gavin.x + 30 > y.LX && gavin.x - 30 < y.LX)&&(gavin.y < y.b && gavin.y+30 > y.t)){
+        o.remove(i);
+        i--;
+        points += 100;
+      }else{
+      fill(150, 75, 0);
+      strokeWeight(1);
+      quad(y.LX, y.b, y.LX, y.t, y.LX + 10, y.t, y.LX + 10, y.b);
       }
     }
     if(draw && mouseX < 150 && !inFlight){
