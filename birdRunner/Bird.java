@@ -1,35 +1,35 @@
 public class Bird{
     public double velocity;
     public double vert;
-    public float xPos;
-    public float yPos;
+    public float x;
+    public float y;
     public boolean done;
     public Bird(float x, float y){
         velocity = 0;
-        xPos = x;
-        yPos = y;
+        this.x = x;
+        this.y = y;
         done = false;
     }
-    public void changeVelocity(double newV){velocity = newV;}
     public void move(){
-    xPos+=velocity;
+    x+=velocity;
     if(velocity > 0){
-      if(yPos < 490){
+      if(y < 490){
          velocity -= 0.0075;
        }else{
-         velocity -= 0.03;
+         velocity -= 0.05;
        }
     }else if(velocity < 0){velocity = 0;}
     else if(!done){done = true;}
-    if(yPos<490){
+    if(y<490){
     vert -= 0.05;
     }else if(Math.abs(vert) > 0.5){
     vert = vert * -0.5;
-    yPos -= vert;
+    y -= vert;
+    if(velocity > 0.05){velocity -= 0.05;}
     }else{
       vert = 0;
-      yPos = 490;
+      y = 490;
     }
-    yPos -= vert;
+    y -= vert;
     }
 }
