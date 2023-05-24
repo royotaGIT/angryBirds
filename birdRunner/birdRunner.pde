@@ -6,8 +6,7 @@ int points = 0;
 ArrayList<Pig> pigs;
 public Prediction one, two, three, four;
 ArrayList<Prediction> predictions;
-public Obstacle obstacle, obstacle2;
-public Platform platform;
+public Obstacle obstacle;
 ArrayList<Obstacle> o;
 public Bird gavin;
 public void setup(){
@@ -16,7 +15,7 @@ public void setup(){
     textAlign(CENTER);
     rectMode(CORNERS);
     background(255);
-    gavin = new Bird(175, 375);
+    gavin = new Bird(150, 400);
     g = loadImage("download.png");
     b = loadImage("b.png");
     p = loadImage("pig.png");
@@ -33,12 +32,8 @@ public void setup(){
     predictions.add(three);
     predictions.add(four);
     obstacle = new Obstacle(500, 400, 700);
-    obstacle2 = new Obstacle(500, 400, 800);
-    platform = new Platform(400, 690, 130);
     o = new ArrayList<Obstacle>();
     o.add(obstacle);
-    o.add(obstacle2);
-    o.add(platform);
 }
 public void draw(){
     image(b,700,300);
@@ -46,7 +41,7 @@ public void draw(){
     fill(0);
     text(points, 1200, 40);
     strokeWeight(10);
-    line(175, 500, 175, 375);
+    line(150, 500, 150, 400);
     image(g,gavin.x,gavin.y);
     for(int i = 0; i < pigs.size(); i++){
       Pig x = pigs.get(i);
@@ -60,12 +55,11 @@ public void draw(){
     for(int i = 0; i < o.size(); i++){
       Obstacle y = o.get(i);
       if(((gavin.x + 15 > y.LX && gavin.x < y.LX)&&(gavin.y < y.b && gavin.y+30 > y.t))&& !gavin.done){
-        if((gavin.velocity > 5)||(Math.abs(gavin.vert) > 2)){
+        if(gavin.velocity > 5){
         o.remove(i);
         i--;
         points += 100;
-        if(gavin.velocity > 3){gavin.velocity -= 3;}
-        else{gavin.vert -= 1;}
+        gavin.velocity -= 3;
         }else{
         gavin.velocity = 0;
         gavin.done = true;
@@ -73,41 +67,19 @@ public void draw(){
       }else{
       fill(150, 75, 0);
       strokeWeight(1);
-      if(y.b != 500){
-        if(y instanceof Platform){
-          Platform x = (Platform)y;
-          boolean left = false;
-          boolean right = false;
-          for(Obstacle z:o){
-             if(z.t == x.b){
-                if(z.LX > x.LX && z.LX < x.LX + x.w){
-                  if(z.LX < x.LX + x.LX/2){left = true;}
-                  else{right = true;}
-                }
-             }
-        }if(right && !left){
-        x.rlean = true;
-      }
-      }
-      if(!(y instanceof Platform)){
       rect(y.LX, y.b, y.LX + 10, y.t);
-      }else{
-        Platform x = (Platform)y;
-        rect(x.LX, x.b, x.LX + x.w, x.t);
       }
     }
-    }
-    }
-    if(draw && mouseX < 175 && !inFlight){
+    if(draw && mouseX < 150 && !inFlight){
     gavin.x = mouseX; 
     if(mouseY < 490){
     gavin.y = mouseY;
     }else{gavin.y = 489;}
     strokeWeight(5);
-    line(175,375,gavin.x - 10, gavin.y + 10);
+    line(150,400,gavin.x - 10, gavin.y + 10);
     for(int i = 0; i < predictions.size(); i++){
       Prediction x = predictions.get(i);
-      x.frames = (int)((350-mouseX) * i / 25 + 15);
+      x.frames = (int)((400-mouseX) * i / 25 + 25);
       x.update(gavin);
       if(x.y < 490){
       fill(255);
@@ -126,7 +98,7 @@ public void mouseReleased(){
   draw = false;
   if(!inFlight){
   inFlight = true;
-  gavin.velocity = (175 - mouseX)/10;
-  gavin.vert = (mouseY - 375)/10;
+  gavin.velocity = (150 - mouseX)/15;
+  gavin.vert = (gavin.y - 400)/15;
   }
 }
