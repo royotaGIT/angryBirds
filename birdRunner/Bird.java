@@ -14,17 +14,17 @@ public class Bird{
     x+=velocity;
     if(velocity > 0){
       if(y < 490){
-         velocity -= 0.01;
+         velocity -= 0.0075;
        }else{
-         velocity -= 0.075;
+         velocity -= 0.3;
        }
     }else if(velocity < 0){velocity = 0;}
     else if(!done){done = true;}
     if(y<490){
     vert -= 0.05;
     }else if(Math.abs(vert) > 0.5){
-    vert = vert * -0.5;
-    y -= vert;
+    vert = vert * -0.3;
+    y -= (vert * 2);
       if(velocity > 0.75){velocity -= 0.75;}
       else{
         velocity = 0;

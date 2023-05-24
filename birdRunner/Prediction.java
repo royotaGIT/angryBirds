@@ -15,8 +15,8 @@ public class Prediction{
     x = bob.x;
     y = bob.y;
     for(int i = 1; i <= frames; i++){
-      x = x + (float)((150 - bob.x)/18 - 0.0075 * i);
-      y = y - (float)((bob.y - 400)/15 - 0.05 * i);
+      x = x + (float)((175 - bob.x)/10 - 0.0075 * i);
+      y = y - (float)((bob.y - 375)/10 - 0.05 * i);
     }
   }
 }
