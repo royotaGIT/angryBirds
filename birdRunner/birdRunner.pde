@@ -13,12 +13,13 @@ public void setup(){
     size(1400,600);
     imageMode(CENTER);
     textAlign(CENTER);
+    rectMode(CORNERS);
     background(255);
     gavin = new Bird(150, 400);
     g = loadImage("download.png");
     b = loadImage("b.png");
     p = loadImage("pig.png");
-    Pig johnny = new Pig(800, 480);
+    Pig johnny = new Pig(750, 480);
     pigs = new ArrayList<Pig>();
     pigs.add(johnny);
     one = new Prediction(gavin);
@@ -53,14 +54,20 @@ public void draw(){
     }
     for(int i = 0; i < o.size(); i++){
       Obstacle y = o.get(i);
-      if((gavin.x + 30 > y.LX && gavin.x - 30 < y.LX)&&(gavin.y < y.b && gavin.y+30 > y.t)){
+      if(((gavin.x + 15 > y.LX && gavin.x < y.LX)&&(gavin.y < y.b && gavin.y+30 > y.t))&& !gavin.done){
+        if(gavin.velocity > 5){
         o.remove(i);
         i--;
         points += 100;
+        gavin.velocity -= 3;
+        }else{
+        gavin.velocity = 0;
+        gavin.done = true;
+      }
       }else{
       fill(150, 75, 0);
       strokeWeight(1);
-      quad(y.LX, y.b, y.LX, y.t, y.LX + 10, y.t, y.LX + 10, y.b);
+      rect(y.LX, y.b, y.LX + 10, y.t);
       }
     }
     if(draw && mouseX < 150 && !inFlight){
@@ -91,7 +98,7 @@ public void mouseReleased(){
   draw = false;
   if(!inFlight){
   inFlight = true;
-  gavin.velocity = (150 - mouseX)/18;
+  gavin.velocity = (150 - mouseX)/15;
   gavin.vert = (gavin.y - 400)/15;
   }
 }
