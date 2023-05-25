@@ -7,7 +7,8 @@ int lives = 3;
 ArrayList<Pig> pigs;
 public Prediction one, two, three, four, five, six, seven;
 ArrayList<Prediction> predictions;
-public Obstacle obstacle, obstacle2, obstacle3, obstacle4, obstacle5, obstacle6;
+public Obstacle obstacle, obstacle2, obstacle3, obstacle4, obstacle5, obstacle6,
+obstacle7, obstacle8, obstacle9;
 ArrayList<Obstacle> o;
 public Bird gavin;
 public void setup(){
@@ -23,10 +24,12 @@ public void setup(){
     Pig johnny = new Pig(750, 478);
     Pig jerry = new Pig(750, 368);
     Pig jacob = new Pig(750, 258);
+    Pig jack = new Pig(1005, 368);
     pigs = new ArrayList<Pig>();
     pigs.add(johnny);
     pigs.add(jerry);
     pigs.add(jacob);
+    pigs.add(jack);
     one = new Prediction(gavin);
     two = new Prediction(gavin);
     three = new Prediction(gavin);
@@ -48,6 +51,8 @@ public void setup(){
     obstacle4 = new Obstacle(390, 290, 700, 10);
     obstacle5 = new Obstacle(290, 280, 690, 130);
     obstacle6 = new Obstacle(390, 290, 800, 10);
+    obstacle7 = new Obstacle(500, 400, 1000, 10);
+    obstacle8 = new Obstacle(400, 390, 940, 130);
     o = new ArrayList<Obstacle>();
     o.add(obstacle);
     o.add(obstacle2);
@@ -55,6 +60,8 @@ public void setup(){
     o.add(obstacle4);
     o.add(obstacle5);
     o.add(obstacle6);
+    o.add(obstacle7);
+    o.add(obstacle8);
 }
 public void draw(){
     image(b,700,300);
@@ -127,8 +134,10 @@ public void draw(){
          else{o.remove(i);}
       }else{
         boolean support = false;
+  
       for(int r = 0; r < o.size(); r++){
-        if((!y.tip &&o.get(r).t == y.b) || y.b >= 500){
+        Obstacle y2 = o.get(r);
+        if(((!y2.tip && y2.t == y.b) && ((y2.LX > y.LX && y2.LX < y.LX + y.w)||(y2.LX < y.LX && y2.LX + y2.w > y.LX)))|| y.b >= 500){
           support = true;
         }
       }

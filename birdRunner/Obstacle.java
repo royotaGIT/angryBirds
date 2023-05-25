@@ -2,7 +2,7 @@ public class Obstacle{
   public float b;
   public float t;
   public float LX;
-  public boolean fall = false;
+  public boolean support = false;
   public float w;
   public double fS;
   public boolean tip = false;
