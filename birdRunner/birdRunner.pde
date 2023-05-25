@@ -81,11 +81,19 @@ public void draw(){
         x.y += 3;
       }
       image(p, x.x, x.y);
+
       if((gavin.x + 30 > x.x && gavin.x - 30 < x.x)&&(gavin.y + 30 > x.y && gavin.y-30 < x.y)){
       pigs.remove(i);
       points+=5000;
       i--;
       }
+      for(int x2 = 0; x2 < pigs.size(); x2++){
+        Pig z = pigs.get(x2);
+        if(!(z == x) && (Math.abs(x.y - z.y) < 20 && z.x == x.x)){
+          pigs.remove(i);
+          i--;
+      }
+    }
     }
     for(int i = 0; i < o.size(); i++){
       Obstacle y = o.get(i);
