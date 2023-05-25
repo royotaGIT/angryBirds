@@ -65,6 +65,16 @@ public void draw(){
     image(g,gavin.x,gavin.y);
     for(int i = 0; i < pigs.size(); i++){
       Pig x = pigs.get(i);
+      boolean support2 = false;
+      for(int r = 0; r < o.size(); r++){
+        Obstacle o2 = o.get(r);
+        if((Math.abs(x.y + 20 - o2.t) < 3 && (o2.LX < x.x && o2.LX + o2.w > x.x)) || x.y >= 480){
+          support2 = true;
+        }
+      }
+      if(!support2){
+        x.y += 3;
+      }
       image(p, x.x, x.y);
       if((gavin.x + 30 > x.x && gavin.x - 30 < x.x)&&(gavin.y + 30 > x.y && gavin.y-30 < x.y)){
       pigs.remove(i);
@@ -90,39 +100,48 @@ public void draw(){
         y.fS = gavin.velocity;
         gavin.velocity = 0;
         gavin.done = true;
-        y.falling = true;
+        y.tip = true;
       }
       }
       fill(150, 75, 0);
       strokeWeight(1);
-      if(y.falling){
+      if(y.tip){
         quad(y.LX + cos(radians(90 - y.fallCount))*10, y.b - sin(radians(y.fallCount))*10,
-              (y.LX + y.w + cos(radians(90 - y.fallCount))*100) - 10 * sin(radians(90 - y.fallCount)), (y.t + sin(radians(y.fallCount))*100) - 10 * sin(radians(y.fallCount)),
-              y.LX + y.w + cos(radians(90 - y.fallCount))*100, y.t + sin(radians(y.fallCount))*100,
+              (y.LX + y.w + cos(radians(90 - y.fallCount))*(y.b - y.t)) - y.w * sin(radians(90 - y.fallCount)), (y.t + sin(radians(y.fallCount))*100) - y.w * sin(radians(y.fallCount)),
+              y.LX + y.w + cos(radians(90 - y.fallCount))*(y.b - y.t), y.t + sin(radians(y.fallCount))*100,
               y.LX + y.w, y.b);
          if(y.fallCount < 90){y.fallCount+=y.fS;}
          else{o.remove(i);}
       }else{
+        boolean support = false;
+      for(int r = 0; r < o.size(); r++){
+        if(o.get(r).t == y.b || y.b >= 500){
+          support = true;
+        }
+      }
+      if(!support){
+        y.t+=3;
+        y.b+=3;
+      }
       rect(y.LX, y.b, y.LX + y.w, y.t);
       }
       
     }
     if(draw && mouseX < 175 && !inFlight){
-    gavin.x = mouseX; 
-    if(mouseY < 490){
-    gavin.y = mouseY;
-    }else{gavin.y = 489;}
+    if(mouseX < 0){mouseX = 0;}
+    else{gavin.x = mouseX;} 
+    if(mouseY > 490){gavin.y = 490;} 
+    else{gavin.y = mouseY;}
     strokeWeight(5);
     line(175,375,gavin.x - 10, gavin.y + 10);
     for(int i = 0; i < predictions.size(); i++){
       Prediction x = predictions.get(i);
       x.frames = (int)((400-mouseX) * i / 25 + 15);
       x.update(mouseX, mouseY);
-      if(x.y < 490){
       fill(255);
       strokeWeight(2);
       circle(x.x,x.y,10);
-      }
+      
     }
   }else if(inFlight){
     gavin.move();

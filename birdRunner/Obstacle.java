@@ -2,10 +2,10 @@ public class Obstacle{
   public float b;
   public float t;
   public float LX;
-  public float fall;
+  public boolean fall;
   public float w;
   public double fS;
-  public boolean falling = false;
+  public boolean tip = false;
   public int fallCount = 0;
   public Obstacle(float bottom, float top, float leftX, float wide){
     b = bottom;
