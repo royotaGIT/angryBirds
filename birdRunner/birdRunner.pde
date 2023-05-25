@@ -3,6 +3,7 @@ PImage g, b, p;
 boolean draw;
 boolean inFlight = false;
 int points = 0;
+int lives = 3;
 ArrayList<Pig> pigs;
 public Prediction one, two, three, four, five, six, seven;
 ArrayList<Prediction> predictions;
@@ -63,9 +64,13 @@ public void draw(){
     strokeWeight(10);
     line(175, 500, 175, 375);
     image(g,gavin.x,gavin.y);
+    for(int i = 1; i < lives; i ++){
+      image(g, 125 - i * 30, 490);
+    }
     for(int i = 0; i < pigs.size(); i++){
       Pig x = pigs.get(i);
       boolean support2 = false;
+      if(x.y >= 478){support2 = true;}
       for(int r = 0; r < o.size(); r++){
         Obstacle o2 = o.get(r);
         if((Math.abs(x.y + 20 - o2.t) < 3 && (o2.LX < x.x && o2.LX + o2.w > x.x)) || x.y >= 480){
@@ -85,7 +90,7 @@ public void draw(){
     for(int i = 0; i < o.size(); i++){
       Obstacle y = o.get(i);
       if(((gavin.x + 15 > y.LX && gavin.x < y.LX + y.w)&&(gavin.y < y.b && gavin.y+30 > y.t))&& !gavin.done){
-        if(gavin.velocity > 5){
+        if(gavin.velocity > 5 || y.w > 10){
         gavin.velocity -= 3;
         o.remove(i);
         i--;
@@ -115,7 +120,7 @@ public void draw(){
       }else{
         boolean support = false;
       for(int r = 0; r < o.size(); r++){
-        if(o.get(r).t == y.b || y.b >= 500){
+        if((!y.tip &&o.get(r).t == y.b) || y.b >= 500){
           support = true;
         }
       }
@@ -150,12 +155,13 @@ public void draw(){
 public void mousePressed(){
   if(!gavin.done){
   draw = true;
-  }else{
+  }else if(lives > 0){
     inFlight = false;
     gavin.x = 175;
     gavin.y = 375;
     draw = true;
     gavin.done = false;
+    lives--;
   }
 }
 public void mouseReleased(){
@@ -165,7 +171,4 @@ public void mouseReleased(){
   gavin.velocity = (175 - mouseX)/15;
   gavin.vert = (mouseY - 375)/15;
   }
-}
-public void keyPressed(){
-  noLoop();
 }
