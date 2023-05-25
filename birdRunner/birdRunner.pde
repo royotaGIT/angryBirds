@@ -147,8 +147,8 @@ public void draw(){
         }
       }
       if(!support){
-        y.t+=3;
-        y.b+=3;
+        y.t+=2;
+        y.b+=2;
       }
       rect(y.LX, y.b, y.LX + y.w, y.t);
       }
@@ -178,15 +178,24 @@ public void draw(){
 
 }
 public void mousePressed(){
-  if(!zero.done){
-  draw = true;
-  }else if(lives > 0){
+  if(!zero.done){draw = true;}
+  else if(lives > 0){
     inFlight = false;
     zero.x = 175;
     zero.y = 375;
     draw = true;
     zero.done = false;
     lives--;
+  }
+  if(inFlight && zero.x > 175){
+    Bird oneSplit = new Bird(zero.x, zero.y);
+    Bird twoSplit = new Bird(zero.x, zero.y);
+    oneSplit.vert = zero.vert+3;
+    twoSplit.vert = zero.vert-3;
+    oneSplit.velocity = zero.velocity;
+    twoSplit.velocity = zero.velocity;
+    birds.add(oneSplit);
+    birds.add(twoSplit);
   }
 }
 public void mouseReleased(){
@@ -198,14 +207,5 @@ public void mouseReleased(){
   }
 }
 public void keyPressed(){
-  if(inFlight){
-    Bird oneSplit = new Bird(zero.x, zero.y);
-    Bird twoSplit = new Bird(zero.x, zero.y);
-    oneSplit.vert = zero.vert+3;
-    twoSplit.vert = zero.vert-3;
-    oneSplit.velocity = zero.velocity;
-    twoSplit.velocity = zero.velocity;
-    birds.add(oneSplit);
-    birds.add(twoSplit);
-  }
+  
 }
