@@ -4,6 +4,8 @@ boolean draw;
 boolean inFlight = false;
 int points = 0;
 int lives = 3;
+Bird zero;
+ArrayList<Bird> birds;
 ArrayList<Pig> pigs;
 public Prediction one, two, three, four, five, six, seven;
 ArrayList<Prediction> predictions;
@@ -17,7 +19,9 @@ public void setup(){
     textAlign(CENTER);
     rectMode(CORNERS);
     background(255);
-    gavin = new Bird(175, 375);
+    zero = new Bird(175, 375);
+    birds = new ArrayList<Bird>();
+    birds.add(zero);
     g = loadImage("download.png");
     b = loadImage("b.png");
     p = loadImage("pig.png");
@@ -30,13 +34,13 @@ public void setup(){
     pigs.add(jerry);
     pigs.add(jacob);
     pigs.add(jack);
-    one = new Prediction(gavin);
-    two = new Prediction(gavin);
-    three = new Prediction(gavin);
-    four = new Prediction(gavin);
-    five = new Prediction(gavin);
-    six = new Prediction(gavin);
-    seven = new Prediction(gavin);
+    one = new Prediction(zero);
+    two = new Prediction(zero);
+    three = new Prediction(zero);
+    four = new Prediction(zero);
+    five = new Prediction(zero);
+    six = new Prediction(zero);
+    seven = new Prediction(zero);
     predictions = new ArrayList<Prediction>();
     predictions.add(one);
     predictions.add(two);
@@ -70,6 +74,7 @@ public void draw(){
     text(points, 1200, 40);
     strokeWeight(10);
     line(175, 500, 175, 375);
+    for(Bird gavin:birds){
     image(g,gavin.x,gavin.y);
     for(int i = 1; i < lives; i ++){
       image(g, 125 - i * 30, 490);
@@ -130,7 +135,7 @@ public void draw(){
               (y.LX + y.w + cos(radians(90 - y.fallCount))*(y.b - y.t)) - y.w * sin(radians(90 - y.fallCount)), (y.t + sin(radians(y.fallCount))*100) - y.w * sin(radians(y.fallCount)),
               y.LX + y.w + cos(radians(90 - y.fallCount))*(y.b - y.t), y.t + sin(radians(y.fallCount))*100,
               y.LX + y.w, y.b);
-         if(y.fallCount < 90){y.fallCount+=y.fS;}
+         if(y.fallCount < 90){y.fallCount+=5;}
          else{o.remove(i);}
       }else{
         boolean support = false;
@@ -149,7 +154,7 @@ public void draw(){
       }
       
     }
-    if(draw && mouseX < 175 && !inFlight){
+    if((draw && mouseX < 175) && !inFlight){
     if(mouseX < 0){mouseX = 0;}
     else{gavin.x = mouseX;} 
     if(mouseY > 490){gavin.y = 490;} 
@@ -167,17 +172,20 @@ public void draw(){
     }
   }else if(inFlight){
     gavin.move();
+      
+    }
   }
+
 }
 public void mousePressed(){
-  if(!gavin.done){
+  if(!zero.done){
   draw = true;
   }else if(lives > 0){
     inFlight = false;
-    gavin.x = 175;
-    gavin.y = 375;
+    zero.x = 175;
+    zero.y = 375;
     draw = true;
-    gavin.done = false;
+    zero.done = false;
     lives--;
   }
 }
@@ -185,7 +193,19 @@ public void mouseReleased(){
   draw = false;
   if(!inFlight){
   inFlight = true;
-  gavin.velocity = (175 - mouseX)/15;
-  gavin.vert = (mouseY - 375)/15;
+  zero.velocity = (175 - mouseX)/15;
+  zero.vert = (mouseY - 375)/15;
+  }
+}
+public void keyPressed(){
+  if(inFlight){
+    Bird oneSplit = new Bird(zero.x, zero.y);
+    Bird twoSplit = new Bird(zero.x, zero.y);
+    oneSplit.vert = zero.vert+3;
+    twoSplit.vert = zero.vert-3;
+    oneSplit.velocity = zero.velocity;
+    twoSplit.velocity = zero.velocity;
+    birds.add(oneSplit);
+    birds.add(twoSplit);
   }
 }
