@@ -1,22 +1,20 @@
-public class Prediction{
+public class Prediction extends Bird{
   public float x;
   public float y;
   public int frames;
+  public Bird bob;
   public Prediction(Bird bob){
-    x = bob.x;
-    y = bob.y;
-    frames = 0;
-    for(int i = 1; i <= frames; i++){
-      x = x + (float)(bob.velocity - (0.0075 * i));
-      y = y - (float)(bob.vert - (0.05 * i));
-    }
+    super(bob.x, bob.y);
+    this.bob = bob;
   }
-  public void update(Bird bob){
-    x = bob.x;
-    y = bob.y;
+  public void update(float xPos, float yPos){
+    x = xPos;
+    y = yPos;
+    velocity = (175 - x)/15;
+    vert = (y - 375)/15;
     for(int i = 1; i <= frames; i++){
-      x = x + (float)(((175 - bob.x)/15) - 0.0075 * i);
-      y = y - (float)(((bob.y - 375)/15) - 0.1 * i);
-    }
-  }
+      this.move();
+    }  
+}
+
 }

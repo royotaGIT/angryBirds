@@ -87,6 +87,7 @@ public void draw(){
           points+=1000;
           break;
         }else{
+        y.fS = gavin.velocity;
         gavin.velocity = 0;
         gavin.done = true;
         y.falling = true;
@@ -96,14 +97,11 @@ public void draw(){
       strokeWeight(1);
       if(y.falling){
         quad(y.LX + cos(radians(90 - y.fallCount))*10, y.b - sin(radians(y.fallCount))*10,
-              y.LX + y.w + sin(radians(y.fallCount - 5.7))*100.5, y.t - y.w + sin(radians(y.fallCount - 5.7))*100.5,
+              (y.LX + y.w + cos(radians(90 - y.fallCount))*100) - 10 * sin(radians(90 - y.fallCount)), (y.t + sin(radians(y.fallCount))*100) - 10 * sin(radians(y.fallCount)),
               y.LX + y.w + cos(radians(90 - y.fallCount))*100, y.t + sin(radians(y.fallCount))*100,
               y.LX + y.w, y.b);
-        text(Double.toString(y.LX + cos(radians(90 - y.fallCount))*10) + " , " + Double.toString(y.b - sin(radians(y.fallCount))*10), 1200, 80);
-        text(Double.toString(y.LX + y.w + sin(radians(y.fallCount - 5.7))*100.5) + " , " + Double.toString(y.t - y.w + sin(radians(y.fallCount - 5.7))*100.5), 1200, 120);
-        text(Double.toString(y.LX + y.w + cos(radians(90 - y.fallCount))*100) + " , " + Double.toString(y.t + sin(radians(y.fallCount))*100), 1200, 160);
-        text(Double.toString(y.LX + y.w) + " , " + Double.toString(y.b), 1200, 200);
-         if(y.fallCount < 90){y.fallCount++;}
+         if(y.fallCount < 90){y.fallCount+=y.fS;}
+         else{o.remove(i);}
       }else{
       rect(y.LX, y.b, y.LX + y.w, y.t);
       }
@@ -118,8 +116,8 @@ public void draw(){
     line(175,375,gavin.x - 10, gavin.y + 10);
     for(int i = 0; i < predictions.size(); i++){
       Prediction x = predictions.get(i);
-      x.update(gavin);
       x.frames = (int)((400-mouseX) * i / 25 + 15);
+      x.update(mouseX, mouseY);
       if(x.y < 490){
       fill(255);
       strokeWeight(2);
