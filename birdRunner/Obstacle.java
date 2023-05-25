@@ -4,7 +4,7 @@ public class Obstacle{
   public float LX;
   public float fall;
   public float w;
-  public boolean falling;
+  public boolean falling = false;
   public int fallCount = 0;
   public Obstacle(float bottom, float top, float leftX, float wide){
     b = bottom;

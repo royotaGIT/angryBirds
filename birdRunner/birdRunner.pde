@@ -4,9 +4,9 @@ boolean draw;
 boolean inFlight = false;
 int points = 0;
 ArrayList<Pig> pigs;
-public Prediction one, two, three, four;
+public Prediction one, two, three, four, five, six, seven;
 ArrayList<Prediction> predictions;
-public Obstacle obstacle;
+public Obstacle obstacle, obstacle2, obstacle3, obstacle4, obstacle5, obstacle6;
 ArrayList<Obstacle> o;
 public Bird gavin;
 public void setup(){
@@ -15,25 +15,45 @@ public void setup(){
     textAlign(CENTER);
     rectMode(CORNERS);
     background(255);
-    gavin = new Bird(150, 400);
+    gavin = new Bird(175, 375);
     g = loadImage("download.png");
     b = loadImage("b.png");
     p = loadImage("pig.png");
-    Pig johnny = new Pig(750, 480);
+    Pig johnny = new Pig(750, 478);
+    Pig jerry = new Pig(750, 368);
+    Pig jacob = new Pig(750, 258);
     pigs = new ArrayList<Pig>();
     pigs.add(johnny);
+    pigs.add(jerry);
+    pigs.add(jacob);
     one = new Prediction(gavin);
     two = new Prediction(gavin);
     three = new Prediction(gavin);
     four = new Prediction(gavin);
+    five = new Prediction(gavin);
+    six = new Prediction(gavin);
+    seven = new Prediction(gavin);
     predictions = new ArrayList<Prediction>();
     predictions.add(one);
     predictions.add(two);
     predictions.add(three);
     predictions.add(four);
-    obstacle = new Obstacle(500, 400, 700);
+    predictions.add(five);
+    predictions.add(six);
+    predictions.add(seven);
+    obstacle = new Obstacle(500, 400, 700, 10);
+    obstacle2 = new Obstacle(400, 390, 690, 130);
+    obstacle3 = new Obstacle(500, 400, 800, 10);
+    obstacle4 = new Obstacle(390, 290, 700, 10);
+    obstacle5 = new Obstacle(290, 280, 690, 130);
+    obstacle6 = new Obstacle(390, 290, 800, 10);
     o = new ArrayList<Obstacle>();
     o.add(obstacle);
+    o.add(obstacle2);
+    o.add(obstacle3);
+    o.add(obstacle4);
+    o.add(obstacle5);
+    o.add(obstacle6);
 }
 public void draw(){
     image(b,700,300);
@@ -41,7 +61,7 @@ public void draw(){
     fill(0);
     text(points, 1200, 40);
     strokeWeight(10);
-    line(150, 500, 150, 400);
+    line(175, 500, 175, 375);
     image(g,gavin.x,gavin.y);
     for(int i = 0; i < pigs.size(); i++){
       Pig x = pigs.get(i);
@@ -54,33 +74,52 @@ public void draw(){
     }
     for(int i = 0; i < o.size(); i++){
       Obstacle y = o.get(i);
-      if(((gavin.x + 15 > y.LX && gavin.x < y.LX)&&(gavin.y < y.b && gavin.y+30 > y.t))&& !gavin.done){
+      if(((gavin.x + 15 > y.LX && gavin.x < y.LX + y.w)&&(gavin.y < y.b && gavin.y+30 > y.t))&& !gavin.done){
         if(gavin.velocity > 5){
+        gavin.velocity -= 3;
         o.remove(i);
         i--;
-        points += 100;
-        gavin.velocity -= 3;
+        points += 100;}
+        else if(gavin.vert < -2){
+          gavin.vert += 2;
+          o.remove(i);
+          i--;
+          points+=1000;
+          break;
         }else{
         gavin.velocity = 0;
         gavin.done = true;
+        y.falling = true;
       }
-      }else{
+      }
       fill(150, 75, 0);
       strokeWeight(1);
-      rect(y.LX, y.b, y.LX + 10, y.t);
+      if(y.falling){
+        quad(y.LX + cos(radians(90 - y.fallCount))*10, y.b - sin(radians(y.fallCount))*10,
+              y.LX + y.w + sin(radians(y.fallCount - 5.7))*100.5, y.t - y.w + sin(radians(y.fallCount - 5.7))*100.5,
+              y.LX + y.w + cos(radians(90 - y.fallCount))*100, y.t + sin(radians(y.fallCount))*100,
+              y.LX + y.w, y.b);
+        text(Double.toString(y.LX + cos(radians(90 - y.fallCount))*10) + " , " + Double.toString(y.b - sin(radians(y.fallCount))*10), 1200, 80);
+        text(Double.toString(y.LX + y.w + sin(radians(y.fallCount - 5.7))*100.5) + " , " + Double.toString(y.t - y.w + sin(radians(y.fallCount - 5.7))*100.5), 1200, 120);
+        text(Double.toString(y.LX + y.w + cos(radians(90 - y.fallCount))*100) + " , " + Double.toString(y.t + sin(radians(y.fallCount))*100), 1200, 160);
+        text(Double.toString(y.LX + y.w) + " , " + Double.toString(y.b), 1200, 200);
+         if(y.fallCount < 90){y.fallCount++;}
+      }else{
+      rect(y.LX, y.b, y.LX + y.w, y.t);
       }
+      
     }
-    if(draw && mouseX < 150 && !inFlight){
+    if(draw && mouseX < 175 && !inFlight){
     gavin.x = mouseX; 
     if(mouseY < 490){
     gavin.y = mouseY;
     }else{gavin.y = 489;}
     strokeWeight(5);
-    line(150,400,gavin.x - 10, gavin.y + 10);
+    line(175,375,gavin.x - 10, gavin.y + 10);
     for(int i = 0; i < predictions.size(); i++){
       Prediction x = predictions.get(i);
-      x.frames = (int)((400-mouseX) * i / 25 + 25);
       x.update(gavin);
+      x.frames = (int)((400-mouseX) * i / 25 + 15);
       if(x.y < 490){
       fill(255);
       strokeWeight(2);
@@ -92,13 +131,24 @@ public void draw(){
   }
 }
 public void mousePressed(){
+  if(!gavin.done){
   draw = true;
+  }else{
+    inFlight = false;
+    gavin.x = 175;
+    gavin.y = 375;
+    draw = true;
+    gavin.done = false;
+  }
 }
 public void mouseReleased(){
   draw = false;
   if(!inFlight){
   inFlight = true;
-  gavin.velocity = (150 - mouseX)/15;
-  gavin.vert = (gavin.y - 400)/15;
+  gavin.velocity = (175 - mouseX)/15;
+  gavin.vert = (mouseY - 375)/15;
   }
+}
+public void keyPressed(){
+  noLoop();
 }

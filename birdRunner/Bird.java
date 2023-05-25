@@ -21,7 +21,7 @@ public class Bird{
     }else if(velocity < 0){velocity = 0;}
     else if(!done){done = true;}
     if(y<490){
-    vert -= 0.05;
+    vert -= 0.1;
     }else if(Math.abs(vert) > 0.5){
     vert = vert * -0.3;
     y -= (vert * 2);
