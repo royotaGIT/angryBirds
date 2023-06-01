@@ -14,6 +14,7 @@ public Obstacle obstacle, obstacle2, obstacle3, obstacle4, obstacle5, obstacle6,
 obstacle7, obstacle8, obstacle9, obstacle10, obstacle11;
 ArrayList<Obstacle> o;
 public Bird gavin;
+public boolean gameOver = false;
 public void setup(){
     size(1400,600);
     imageMode(CENTER);
@@ -77,6 +78,7 @@ public void setup(){
     o.add(obstacle11);
 }
 public void draw(){
+  if(!gameOver){
     image(b,700,300);
     textSize(30);
     fill(0);
@@ -107,7 +109,7 @@ public void draw(){
 
       if((gavin.x + 30 > x.x && gavin.x - 30 < x.x)&&(gavin.y + 30 > x.y && gavin.y-30 < x.y)){
       pigs.remove(i);
-      points+=5000;
+      points+=500;
       i--;
       }
       for(int x2 = 0; x2 < pigs.size(); x2++){
@@ -126,13 +128,7 @@ public void draw(){
         o.remove(i);
         i--;
         points += 100;
-      //}
-        //else if(gavin.vert < -2){
-        //  gavin.vert += 2;
-        //  o.remove(i);
-        //  i--;
-        //  points+=1000;
-        //  break;
+     
         }else{
           if(y instanceof Stone){
             if(gavin.velocity > y.threshold * 0.8){
@@ -202,7 +198,15 @@ public void draw(){
   }else if(inFlight){
     gavin.move();
     }
+    if(lives <=0){
+      gameOver = true;
+    }
   }
+}else{
+  textSize(80);
+  fill(0);
+  text("Game Over!", 650, 200);
+}
 }
 public void mousePressed(){
   if(!zero.done){draw = true;}
