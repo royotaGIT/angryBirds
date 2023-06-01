@@ -13,7 +13,7 @@ public class Prediction extends Bird{
     if(y > 490){y = 490;}
     if(x < 0){x = 0;}
     velocity = (175 - x)/15;
-    vert = (y - 375)/15;
+    vert = (y - 375)/12;
     for(int i = 1; i <= frames; i++){
       this.move();
     }  

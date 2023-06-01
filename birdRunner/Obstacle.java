@@ -7,6 +7,8 @@ public class Obstacle{
   public double fS;
   public boolean tip = false;
   public int fallCount = 0;
+  public double threshold = 5;
+  public double slow = 5;
   public Obstacle(float bottom, float top, float leftX, float wide){
     b = bottom;
     t = top;
